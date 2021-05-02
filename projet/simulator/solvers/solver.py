@@ -28,4 +28,13 @@ class ISolver:
 
 
 class DummySolver(ISolver):
-    pass
+    def __init__(self,f,t0,y0,max_step_size=0.01):
+        super().__init__(f,t0,y0,max_step_size)
+
+    def integrate(self,t):
+        
+       
+        self.y0=[self.y0[i]+t*self.f(0,self.y0)[i] for i in range(len(self.y0))]
+        
+        return self.y0
+

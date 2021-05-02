@@ -19,7 +19,6 @@ class Simulator:
 
     def step(self, h):
         y = self.solver.integrate(self.t + h)
-
         for i in range(len(self.world)):
             b_i = self.world.get(i)
 

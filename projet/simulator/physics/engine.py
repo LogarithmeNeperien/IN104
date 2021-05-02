@@ -6,7 +6,9 @@ def gravitational_force(pos1, mass1, pos2, mass2):
     """ Return the force applied to a body in pos1 with mass1
         by a body in pos2 with mass2
     """
-    raise NotImplementedError
+    #SETA 2/05 : in 2D
+    d=(pos2-pos1).sqrnorm()
+    return G*mass1*mass2*d**(-1.5)*(pos2-pos1)
 
 
 class IEngine:
@@ -39,4 +41,35 @@ class IEngine:
 
 
 class DummyEngine(IEngine):
-    pass
+    def __init__(self,world):
+        super().__init__(world)
+
+    def make_solver_state(self):
+        pos=[]
+        vel=[]
+        
+        for b in self.world.bodies():
+            pos+=b.position
+            vel+=b.velocity
+
+        return pos+vel
+
+    def derivatives(self,t0,y0):
+        velocities=y0[2*len(self.world)::]
+
+        masses=[b.mass for b in self.world.bodies()]
+
+        accelerations=[0]*2*len(self.world)
+
+        for i in range(len(self.world)):
+            pos_b_i=Vector2(y0[2*i],y0[2*i+1])
+            for j in range(i):                
+                pos_b_j=Vector2(y0[2*j],y0[2*j+1])
+                force=gravitational_force(pos_b_i,masses[i],pos_b_j,masses[j])
+                accelerations[2*i]+=force.get_x()/masses[i]
+                accelerations[2*i+1]+=force.get_y()/masses[i]
+                accelerations[2*j]-=force.get_x()/masses[j]
+                accelerations[2*j+1]-=force.get_y()/masses[j]
+            
+
+        return velocities+accelerations
