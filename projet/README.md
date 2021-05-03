@@ -1,0 +1,2 @@
+Page avec des trajectoires 3-corps stables et leurs conditions initiales :
+https://observablehq.com/@rreusser/periodic-planar-three-body-orbits#group=Li%20%26%20Liao%20Free-fall&sequence=Free%20fall&orbit=F6(1%2C1%2C1)
