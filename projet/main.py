@@ -9,7 +9,7 @@ from simulator.graphics import Screen
 import pygame as pg
 
 if __name__ == "__main__":
-    b1 = Body(Vector2(0, 0),
+    b1 = Body(Vector2(10, 10),
               velocity=Vector2(0, 0),
               mass=10,
               draw_radius=10)
