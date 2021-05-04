@@ -1,3 +1,5 @@
+from ..utils.vector import Vector
+
 class SolverError(Exception):
     pass
 
@@ -28,4 +30,15 @@ class ISolver:
 
 
 class DummySolver(ISolver):
-    pass
+    def __init__(self,f,t0,y0,max_step_size=0.01):
+        super().__init__(f,t0,y0,max_step_size)
+
+
+    def integrate(self, t):
+        derivative = (self.f)(t,self.y0)
+        derivative = derivative*(self.max_step_size)
+        #print("new value y = " + str(self.y0.__add__(derivative)))
+        self.y0 = self.y0+derivative
+        return self.y0
+
+

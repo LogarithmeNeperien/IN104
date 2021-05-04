@@ -2,7 +2,6 @@ class Simulator:
     def __init__(self, world, Engine, Solver):
         self.t = 0
         self.world = world
-
         self.engine = Engine(self.world)
 
         # Engine uses World to represent the state

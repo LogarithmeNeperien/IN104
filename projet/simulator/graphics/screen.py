@@ -53,8 +53,11 @@ class Screen:
 
         self.frame += 1
 
-    def draw(self, world):
+    def erase(self):
         self._screen.fill(self._bg_color)
+
+    def draw(self, world):
+        #self._screen.fill(self._bg_color)
 
         s = pg.Surface(self.screen_size, pg.SRCALPHA)
         self.__draw_world(s, world)
