@@ -1,3 +1,4 @@
+#04/05 Seta : codage de to_screen_coords et from_screen_cords
 from ..utils.vector import Vector2
 
 
@@ -9,8 +10,8 @@ class Camera:
 
     def to_screen_coords(self, position):
         """ Converts the world-coordinate position to a screen-coordinate. """
-        return position
+        return self.scale*(position-self.position)
 
     def from_screen_coords(self, position):
         """ Converts the screen-coordinate position to a world-coordinate. """
-        return position
+        return position/self.scale+self.position

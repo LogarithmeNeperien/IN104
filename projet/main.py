@@ -14,7 +14,7 @@ if __name__ == "__main__":
               mass=10,
               draw_radius=10)
     b2 = Body(Vector2(1, 1),
-              velocity=Vector2(0, 0.2),
+              velocity=Vector2(0, 0),
               mass=1,
               draw_radius=5)
 
