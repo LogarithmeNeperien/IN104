@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#04/05 Seta: ajout du suivi d'objet par la caméra et du déplacement de la caméra par clic
 
 from simulator import Simulator, World, Body
 from simulator.utils.vector import Vector2
@@ -12,7 +13,7 @@ if __name__ == "__main__":
     b1 = Body(Vector2(10, 10),
               velocity=Vector2(0, 0),
               mass=10,
-              draw_radius=10)
+              draw_radius=50)
     b2 = Body(Vector2(1, 1),
               velocity=Vector2(0, 0),
               mass=1,
@@ -51,6 +52,33 @@ if __name__ == "__main__":
             screen.camera.scale *= 1.1
         elif screen.get_wheel_down():
             screen.camera.scale *= 0.9
+
+        #right click : the camera centers on the body clicked; if the void is right clicked, the camera stay put
+        elif screen.get_right_mouse():
+            
+            no_match=True
+            for b in world.bodies():
+                
+                pos_abs_mouse=screen.camera.from_screen_coords(screen.mouse_position)
+
+                if abs(pos_abs_mouse-b.position)<b.draw_radius/screen.camera.scale:
+                    screen.camera.follows=world.get(b.id_nb)
+                    no_match=False
+
+            if no_match:
+                screen.camera.follows=None
+
+
+        elif screen.get_left_mouse():
+            camera=screen.camera
+            camera.position=camera.from_screen_coords(screen.mouse_position)-0.5*camera.screen_size/camera.scale #le -0.5*... sert à que la caméra centre sur le clic gauche
+
+
+        #positioning of camera
+        if screen.camera.follows is not None:
+            camera=screen.camera
+            camera.position=camera.follows.position-0.5*camera.screen_size/camera.scale
+
 
         # draw current state
         screen.draw(world)
