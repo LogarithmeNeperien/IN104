@@ -53,7 +53,7 @@ if __name__ == "__main__":
         elif screen.get_wheel_down():
             screen.camera.scale *= 0.9
 
-        #right click : the camera centers on the body clicked; if the void is right clicked, the camera stay put
+        #right click : the camera centers on the clicked body; if the void is right clicked, the camera stay put
         elif screen.get_right_mouse():
             
             no_match=True
@@ -68,7 +68,7 @@ if __name__ == "__main__":
             if no_match:
                 screen.camera.follows=None
 
-
+	#left click : the camera centers on the clicked region
         elif screen.get_left_mouse():
             camera=screen.camera
             camera.position=camera.from_screen_coords(screen.mouse_position)-0.5*camera.screen_size/camera.scale #le -0.5*... sert à que la caméra centre sur le clic gauche
