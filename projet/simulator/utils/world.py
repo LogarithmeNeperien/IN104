@@ -1,3 +1,5 @@
+#11/05 Theophane : Ajout de la méthode merge_bodies qui réalise la fusion de deux corps
+
 from .vector import Vector2
 from ..utils.uid import UID
 
@@ -38,6 +40,19 @@ class World:
         """ Return a generator of all the bodies. """
         for body in self._bodies:
             yield body
+
+    def merge_bodies(self,id_winner,id_loser):
+        """ Return the list of bodies where two of them were merged into one """
+        if id_winner != id_loser :
+            winner = self.get(id_winner)
+            loser = self.get(id_loser)
+            winner.position = (winner.position+loser.position)/2
+            winner.velocity = (winner.position+loser.velocity)/2
+            winner.mass += loser.mass
+            winner.draw_radius = (winner.draw_radius+loser.draw_radius)/2
+            winner.real_radius = (winner.real_radius+loser.real_radius)/2
+            self._bodies.remove(loser)
+
 
     def __len__(self):
         """ Return the number of bodies """
