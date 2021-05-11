@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #04/05 Seta: ajout du suivi d'objet par la caméra et du déplacement de la caméra par clic
 #11/05 Seta: possibilité d'ajouter des corps àl'aide du clic du milieu, l'affichage du nombre de corps dans le monde en bas à droite
+#seta: on centre sur la position moyenne la camera au début
 
 from simulator import Simulator, World, Body
 from simulator.utils.vector import Vector2
@@ -16,10 +17,14 @@ if __name__ == "__main__":
               mass=1,
               draw_radius=10)
 
-    
+    b2 = Body(Vector2(300, 400),
+              velocity=Vector2(0, 0),
+              mass=1,
+              draw_radius=10)
 
     world = World()
     world.add(b1)
+   # world.add(b2)
     
 
     simulator = Simulator(world, DummyEngine, DummySolver)
@@ -28,11 +33,23 @@ if __name__ == "__main__":
     screen = Screen(screen_size,
                     bg_color=(0, 0, 0),
                     caption="Simulator")
-    screen.camera.scale = 10
 
+    
+    #centrage de la caméra
+    for b in world.bodies():
+        screen.camera.position+=b.position
+
+    screen.camera.position/=len(world)
+
+    #le bon scale (diagonale d'écran/ distance max entre body et la caméra)
+    max_norm=1
+    for b in world.bodies():
+        max_norm = max(max_norm,(b.position-screen.camera.position).norm())
+
+    screen.camera.scale= screen_size.get_y()/max_norm/2
     # this coefficient controls the speed
     # of the simulation
-    time_scale = 1
+    time_scale = 10
 
     print("Start program")
     while not screen.should_quit:
