@@ -1,5 +1,5 @@
 import unittest
-from simulator.tests import *
+import simulator.tests 
 
 if __name__ == '__main__':
     unittest.main(simulator.tests)

@@ -8,7 +8,11 @@ def gravitational_force(pos1, mass1, pos2, mass2):
     """
     #SETA 2/05 : in 2D
     d=(pos2-pos1).sqrnorm()
-    return G*mass1*mass2*d**(-1.5)*(pos2-pos1)
+    if d!=0:
+    	return G*mass1*mass2*d**(-1.5)*(pos2-pos1)
+    else:
+    	return Vector2(0,0)
+	
 
 
 class IEngine:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 #04/05 Seta: ajout du suivi d'objet par la caméra et du déplacement de la caméra par clic
+#11/05 Seta: possibilité d'ajouter des corps àl'aide du clic du milieu, l'affichage du nombre de corps dans le monde en bas à droite
 
 from simulator import Simulator, World, Body
 from simulator.utils.vector import Vector2
@@ -10,18 +11,24 @@ from simulator.graphics import Screen
 import pygame as pg
 
 if __name__ == "__main__":
-    b1 = Body(Vector2(10, 10),
-              velocity=Vector2(0, 0),
-              mass=10,
-              draw_radius=50)
-    b2 = Body(Vector2(1, 1),
+    b1 = Body(Vector2(100, 100),
               velocity=Vector2(0, 0),
               mass=1,
-              draw_radius=5)
+              draw_radius=10)
+    b2 = Body(Vector2(5, 80),
+              velocity=Vector2(0, 0),
+              mass=1,
+              draw_radius=10)
+
+    b3 = Body(Vector2(50, 96),
+              velocity=Vector2(0, 0),
+              mass=1,
+              draw_radius=10)
 
     world = World()
     world.add(b1)
     world.add(b2)
+    world.add(b3)
 
     simulator = Simulator(world, DummyEngine, DummySolver)
 
@@ -29,7 +36,7 @@ if __name__ == "__main__":
     screen = Screen(screen_size,
                     bg_color=(0, 0, 0),
                     caption="Simulator")
-    screen.camera.scale = 50
+    screen.camera.scale = 10
 
     # this coefficient controls the speed
     # of the simulation
@@ -68,10 +75,21 @@ if __name__ == "__main__":
             if no_match:
                 screen.camera.follows=None
 
-	#left click : the camera centers on the clicked region
+	   #left click : the camera centers on the clicked region
         elif screen.get_left_mouse():
             camera=screen.camera
             camera.position=camera.from_screen_coords(screen.mouse_position)-0.5*camera.screen_size/camera.scale #le -0.5*... sert à que la caméra centre sur le clic gauche
+
+        #middle click : add a body on the click if there is enough room
+
+        elif screen.get_middle_mouse():
+            position_absolue=screen.camera.from_screen_coords(screen.mouse_position)
+            b = Body(position_absolue,
+              velocity=Vector2(0, 0),
+              mass=1,
+              draw_radius=10)
+            world.add(b)
+            simulator.solver.y0=simulator.engine.make_solver_state()
 
 
         #positioning of camera
@@ -85,6 +103,9 @@ if __name__ == "__main__":
 
         # draw additional stuff
         screen.draw_corner_text("Time: %f" % simulator.t)
+        screen.draw_corner_text("Nb of Bodys: %d" % len(world),False)
+        #screen.draw_corner_text("Nb of Body: %f" % len(world))
+
 
         # show new state
         screen.update()
