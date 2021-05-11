@@ -1,7 +1,9 @@
-
+<<<<<<< HEAD
 #11/05 Theophane, ajout de l'argument should_erase_background dans la fonction draw permettant de gérer l'affichage des traçantes
-#SETA 11/05 ajout du choix du coin pour draw_corner_text
 
+=======
+#SETA 11/05 ajout du choix du coin pour draw_corner_text
+>>>>>>> projet_seta
 import pygame as pg
 
 from ..utils.pygame_utils import draw_text

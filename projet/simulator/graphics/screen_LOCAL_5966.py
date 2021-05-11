@@ -1,6 +1,4 @@
-
 #11/05 Theophane, ajout de l'argument should_erase_background dans la fonction draw permettant de gérer l'affichage des traçantes
-#SETA 11/05 ajout du choix du coin pour draw_corner_text
 
 import pygame as pg
 
@@ -74,8 +72,6 @@ class Screen:
         draw_text(self._screen, self._font, "Should quit: %s" % self.should_quit,
                   Vector2(0, 36), (255, 255, 255))
 
-        
-
     def tick(self, fps):
         self.clock.tick(fps)
         return self.clock.get_time()
@@ -93,13 +89,9 @@ class Screen:
                            (int(screen_pos.get_x()), int(screen_pos.get_y())),
                            int(body.draw_radius), 0)
 
-    def draw_corner_text(self, s, left_side=True):
-        if left_side :
-            draw_text(self._screen, self._font, s,
-                Vector2(0, self.screen_size.get_y() - 12), (255, 255, 255))
-        else:
-            draw_text(self._screen, self._font, s,
-                Vector2(self.screen_size.get_x()-100, self.screen_size.get_y() - 12), (255, 255, 255))
+    def draw_corner_text(self, s):
+        draw_text(self._screen, self._font, s,
+                  Vector2(0, self.screen_size.get_y() - 12), (255, 255, 255))
 
     def get_left_mouse(self): return self._buttons[0]
     def get_middle_mouse(self): return self._buttons[1]

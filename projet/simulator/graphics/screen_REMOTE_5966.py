@@ -1,7 +1,4 @@
-
-#11/05 Theophane, ajout de l'argument should_erase_background dans la fonction draw permettant de gérer l'affichage des traçantes
 #SETA 11/05 ajout du choix du coin pour draw_corner_text
-
 import pygame as pg
 
 from ..utils.pygame_utils import draw_text
@@ -57,9 +54,8 @@ class Screen:
 
         self.frame += 1
 
-    def draw(self, world,should_erase_background):
-        if should_erase_background:
-            self._screen.fill(self._bg_color)
+    def draw(self, world):
+        self._screen.fill(self._bg_color)
 
         s = pg.Surface(self.screen_size, pg.SRCALPHA)
         self.__draw_world(s, world)
