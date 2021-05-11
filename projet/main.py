@@ -16,21 +16,11 @@ if __name__ == "__main__":
               mass=1,
               draw_radius=10)
 
-    b2 = Body(Vector2(5, 80),
-              velocity=Vector2(0, 0),
-              mass=1,
-              draw_radius=10)
-
-    b3 = Body(Vector2(50, 96),
-              velocity=Vector2(0, 0),
-              mass=1,
-              draw_radius=10)
     
 
     world = World()
     world.add(b1)
-    world.add(b2)
-    world.add(b3)
+    
 
     simulator = Simulator(world, DummyEngine, DummySolver)
 
@@ -80,7 +70,7 @@ if __name__ == "__main__":
 	   #left click : the camera centers on the clicked region
         elif screen.get_left_mouse():
             camera=screen.camera
-            camera.position=camera.from_screen_coords(screen.mouse_position)-0.5*camera.screen_size/camera.scale #le -0.5*... sert à que la caméra centre sur le clic gauche
+            camera.position=camera.from_screen_coords(screen.mouse_position)
 
         #middle click : add a body on the click if there is enough room
 
@@ -91,13 +81,15 @@ if __name__ == "__main__":
               mass=1,
               draw_radius=10)
             world.add(b)
+            
             simulator.solver.y0=simulator.engine.make_solver_state()
+            
 
 
         #positioning of camera
         if screen.camera.follows is not None:
             camera=screen.camera
-            camera.position=camera.follows.position-0.5*camera.screen_size/camera.scale
+            camera.position=camera.follows.position
 
 
         # draw current state
