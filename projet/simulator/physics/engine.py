@@ -53,8 +53,9 @@ class DummyEngine(IEngine):
         vel=[]
         
         for b in self.world.bodies():
-            pos+=b.position
-            vel+=b.velocity
+        	
+        	pos+=b.position
+        	vel+=b.velocity
 
         return pos+vel
 
@@ -74,6 +75,6 @@ class DummyEngine(IEngine):
                 accelerations[2*i+1]+=force.get_y()/masses[i]
                 accelerations[2*j]-=force.get_x()/masses[j]
                 accelerations[2*j+1]-=force.get_y()/masses[j]
-            
 
+                
         return velocities+accelerations
