@@ -53,8 +53,9 @@ class DummyEngine(IEngine):
         vel=[]
         
         for b in self.world.bodies():
-            pos+=b.position
-            vel+=b.velocity
+        	
+        	pos+=b.position
+        	vel+=b.velocity
 
         return pos+vel
 
