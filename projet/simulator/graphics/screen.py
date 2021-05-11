@@ -56,8 +56,9 @@ class Screen:
     def erase(self):
         self._screen.fill(self._bg_color)
 
-    def draw(self, world):
-        #self._screen.fill(self._bg_color)
+    def draw(self, world,should_erase_background):
+        if should_erase_background:
+            self._screen.fill(self._bg_color)
 
         s = pg.Surface(self.screen_size, pg.SRCALPHA)
         self.__draw_world(s, world)

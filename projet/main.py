@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+#04/05 Seta: ajout du suivi d'objet par la caméra et du déplacement de la caméra par clic
+
+#11/05 Theophane: ajout de la possibilité d'afficher ou non les traçantes des objets par pression de la molette de la souris
 
 from simulator import Simulator, World, Body
 from simulator.utils.vector import Vector2
@@ -9,67 +12,30 @@ from simulator.graphics import Screen
 import pygame as pg
 
 if __name__ == "__main__":
+    b1 = Body(Vector2(10, 10),
+              velocity=Vector2(0.002, 0),
+              mass=10,
+              draw_radius=50,
+              real_radius=5)
+    b2 = Body(Vector2(1, 1),
+              velocity=Vector2(0, 0),
+              mass=1,
+              draw_radius=5,
+              real_radius=1)
 
-    v1 = 0.3471168881
-    v2 = 0.5327249454
-    M = 1
-    # b1 = Body(Vector2(-1,0),
-    #           velocity=Vector2(v1,v2),
-    #           mass=M,
-    #           color = (255,0,230),
-    #           draw_radius=5)
-    # b2 = Body(Vector2(1,0),
-    #           velocity=Vector2(v1, v2),
-    #           mass=M,
-    #           color = (50,255,0),
-    #           draw_radius=5)
-    # b3 = Body(Vector2(0,0),
-    #           velocity=Vector2(-2*v1, -2*v2),
-    #           mass=M,
-    #           color = (255,50,50),
-    #           draw_radius=5)
-
-
-
-    b1 = Body(Vector2(-0.5358076316429841,0.37180556472793874),
-              velocity=Vector2(0.9743317053313775, -1.096362116657104),
-              mass=M,
-              color = (0,128,128),
-              draw_radius=4)
-    b2 = Body(Vector2(0.7676771558912595, -0.867823428450871),
-              velocity=Vector2(0.08096334827522714, -1.0175492452692891),
-              mass=M,
-              color = (255,240,20),
-              draw_radius=4)
-    b3 = Body(Vector2(-0.031055488577342624,-1.2763443049957865 ),
-              velocity = Vector2(-0.6990773093771361,0.672388539946965),
-              mass = M,
-              color = (255,50,50),
-              draw_radius =4)
-    b4 = Body(Vector2(0.1675715831569598, 0.3604411202596589),
-              velocity=Vector2(0.5493639322512589 , 1.5662040016531198),
-              mass=M,
-              color = (50,255,0),
-              draw_radius=4)
-    b5 = Body(Vector2(-0.36838561882789267, 1.41192104845906),
-              velocity=Vector2(-0.9055816764807272, -0.12468117967369167),
-              mass=M,
-              color = (255,0,230),
-              draw_radius=4)
     world = World()
     world.add(b1)
     world.add(b2)
-    world.add(b3)
-    world.add(b4)
-    world.add(b5)
 
     simulator = Simulator(world, DummyEngine, DummySolver)
 
-    screen_size = Vector2(1200, 800)
+    screen_size = Vector2(800, 600)
     screen = Screen(screen_size,
                     bg_color=(0, 0, 0),
                     caption="Simulator")
     screen.camera.scale = 50
+
+    should_erase_background = True
 
     # this coefficient controls the speed
     # of the simulation
@@ -85,17 +51,46 @@ if __name__ == "__main__":
 
         # read events
         screen.get_events()
+
         # handle events
         #   scroll wheel
         if screen.get_wheel_up():
-            screen.erase()
             screen.camera.scale *= 1.1
         elif screen.get_wheel_down():
-            screen.erase()
             screen.camera.scale *= 0.9
 
+        #right click : the camera centers on the body clicked; if the void is right clicked, the camera stay put
+        elif screen.get_right_mouse():
+
+            no_match=True
+            for b in world.bodies():
+
+                pos_abs_mouse=screen.camera.from_screen_coords(screen.mouse_position)
+
+                if abs(pos_abs_mouse-b.position)<b.draw_radius/screen.camera.scale:
+                    screen.camera.follows=world.get(b.id_nb)
+                    no_match=False
+
+            if no_match:
+                screen.camera.follows=None
+
+
+        elif screen.get_left_mouse():
+            camera=screen.camera
+            camera.position=camera.from_screen_coords(screen.mouse_position)-0.5*camera.screen_size/camera.scale #le -0.5*... sert à que la caméra centre sur le clic gauche
+
+
+        #positioning of camera
+        if screen.camera.follows is not None:
+            camera=screen.camera
+            camera.position=camera.follows.position-0.5*camera.screen_size/camera.scale
+
+        # enable or disable body visual tracking
+        if screen.get_middle_mouse():
+            should_erase_background = not(should_erase_background)
+
         # draw current state
-        screen.draw(world)
+        screen.draw(world,should_erase_background)
 
         # draw additional stuff
         screen.draw_corner_text("Time: %f" % simulator.t)
