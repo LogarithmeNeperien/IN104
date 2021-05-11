@@ -15,6 +15,7 @@ if __name__ == "__main__":
               velocity=Vector2(0, 0),
               mass=1,
               draw_radius=10)
+
     b2 = Body(Vector2(5, 80),
               velocity=Vector2(0, 0),
               mass=1,
@@ -24,6 +25,7 @@ if __name__ == "__main__":
               velocity=Vector2(0, 0),
               mass=1,
               draw_radius=10)
+    
 
     world = World()
     world.add(b1)
@@ -40,7 +42,7 @@ if __name__ == "__main__":
 
     # this coefficient controls the speed
     # of the simulation
-    time_scale = 10
+    time_scale = 1
 
     print("Start program")
     while not screen.should_quit:
@@ -104,7 +106,7 @@ if __name__ == "__main__":
         # draw additional stuff
         screen.draw_corner_text("Time: %f" % simulator.t)
         screen.draw_corner_text("Nb of Bodys: %d" % len(world),False)
-        #screen.draw_corner_text("Nb of Body: %f" % len(world))
+        
 
 
         # show new state

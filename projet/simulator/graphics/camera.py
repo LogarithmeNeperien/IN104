@@ -12,7 +12,7 @@ class Camera:
 
     def to_screen_coords(self, position):
         """ Converts the world-coordinate position to a screen-coordinate. """
-        return self.scale*(position-self.position)
+        return self.scale*(position-self.position/2)
 
     def from_screen_coords(self, position):
         """ Converts the screen-coordinate position to a world-coordinate. """
