@@ -2,6 +2,7 @@
 # 04/05 Seta: ajout du suivi d'objet par la caméra et du déplacement de la caméra par clic
 # 11/05 Seta: possibilité d'ajouter des corps àl'aide du clic du milieu, l'affichage du nombre de corps dans le monde en bas à droite
 # seta: on centre sur la position moyenne la camera au début
+#16/05 : Theophane : possibilité de sélectionner la configuration de départ directement en ligne de commande, les configurations disponibles sont dans le fichier trajectories.txt
 
 from simulator import Simulator, World, Body
 from simulator.utils.vector import Vector2
@@ -10,15 +11,43 @@ from simulator.physics.engine import DummyEngine
 from simulator.graphics import Screen
 
 import pygame as pg
+import sys
 
 if __name__ == "__main__":
-    b1 = Body(Vector2(100, 100), velocity=Vector2(0, 0), mass=1, draw_radius=10)
-
-    b2 = Body(Vector2(300, 400), velocity=Vector2(0, 0), mass=1, draw_radius=10)
 
     world = World()
-    world.add(b1)
-    world.add(b2)
+
+    #Permet de sélectionner la trajectoire voulue
+    f = open("trajectories.txt","r")
+
+    line = f.readline()
+
+    while line != (str(sys.argv[1])+'\n') :
+        line = f.readline()
+        if line == '' :
+            print("Please type a valid trajectory")
+            f.close()
+            sys.exit()
+
+    print("You have selected the " + str(line)+" configuration")
+    nb_body = int(f.readline())
+
+    for i in range(nb_body):
+        attributes = f.readline().split()
+        position = Vector2(float(attributes[0]),float(attributes[1]))
+        velocity = Vector2(float(attributes[2]),float(attributes[3]))
+        mass = float(attributes[4])
+        color = (int(attributes[5]),int(attributes[6]),int(attributes[7]))
+        real_radius = float(attributes[8])
+        draw_radius = float(attributes[9])
+        b = Body(position,velocity,mass,color,real_radius,draw_radius)
+        world.add(b)
+
+    f.close()
+
+    #Permet de contrôler l'affichage des traçantes
+    should_erase_background = True
+
 
     simulator = Simulator(world, DummyEngine, DummySolver)
 
@@ -102,7 +131,7 @@ if __name__ == "__main__":
             camera.position = camera.follows.position
 
         # draw current state
-        screen.draw(world)
+        screen.draw(world,should_erase_background)
 
         # draw additional stuff
         screen.draw_corner_text("Time: %f" % simulator.t)
