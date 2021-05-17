@@ -39,7 +39,7 @@ if __name__ == "__main__":
         screen.camera.scale = screen_size.get_y() / max_norm / 2
     # this coefficient controls the speed
     # of the simulation
-    time_scale = 1
+    time_scale = 10
 
     print("Start program")
 
