@@ -22,7 +22,7 @@ class Quadtree:
 			#Les fils créés représentent les 4 quarts du carré que représentent le noeud père (leur side_length est donc deux fois plus petite)
 			if self.nodes is None:
 				self.nodes=[Quadtree(self.side_length,
-					self.center+Vector2(i*self.side_length/2,j*self.side_length)) for i in range(-1,2,2) for j in range(-1,2,2)]
+					self.center+Vector2(i*self.side_length/4,j*self.side_length/4)) for j in range(-1,2,2) for i in range(-1,2,2)]
 
 			b_position=body.position
 			indice_ajout=-1

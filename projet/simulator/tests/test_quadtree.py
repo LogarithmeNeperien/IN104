@@ -10,22 +10,41 @@ class QuadtreeTestCase(unittest.TestCase):
 		#side_lentgh=10
 		self.quadtree=Quadtree(10)
 
-	
-		
-	def test_add(self):
-		b1=Body(Vector2(1,1))
-		b2=Body(Vector2(1,4))
-		b3=Body(Vector2(3,4))
-		b4=Body(Vector2(1,4))
+	def test_mass(self):
+		b1=Body(Vector2(0,0))
+		b2=Body(Vector2(3,3))
+		b3=Body(Vector2(-5,4))
+		b4=Body(Vector2(-1,-1))
 
 		self.quadtree.add(b1)
 		self.quadtree.add(b2)
 		self.quadtree.add(b3)
 		self.quadtree.add(b4)
 
-		for i in range(2):
-			self.assertIsNone(self.quadtree.nodes[(3+i)%4].mean_body)
-			self.assertIsNone(self.quadtree.nodes[(3+i)%4].nodes)
+		self.assertEqual(4,self.quadtree.mean_body.mass)
+		
+	def test_add(self):
+		b1=Body(Vector2(1,1))
+		b2=Body(Vector2(1,4))
+		b3=Body(Vector2(3,4))
+		b4=Body(Vector2(4,3))
+
+		self.quadtree.add(b1)
+		self.quadtree.add(b2)
+		self.quadtree.add(b3)
+		self.quadtree.add(b4)
+
+		
+		
+		self.assertIsNone(self.quadtree.nodes[0].mean_body)
+		self.assertIsNone(self.quadtree.nodes[0].nodes)
+		self.assertIsNone(self.quadtree.nodes[1].mean_body)
+		self.assertIsNone(self.quadtree.nodes[1].nodes)
+		self.assertIsNone(self.quadtree.nodes[3].mean_body)
+		self.assertIsNone(self.quadtree.nodes[3].nodes)
+		
+		
+		
 
 		node=self.quadtree.nodes[2]
 
