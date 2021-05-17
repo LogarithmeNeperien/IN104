@@ -56,20 +56,20 @@ if __name__ == "__main__":
 
     # centrage de la caméra
     for b in world.bodies():
-        screen.camera.position = b.position
+        screen.camera.position += b.position
 
-        screen.camera.position /= len(world)
+    screen.camera.position /= len(world)
 
     # le bon scale (diagonale d'écran/ distance max entre body et la caméra)
     max_norm = 1
     for b in world.bodies():
         max_norm = max(max_norm, (b.position - screen.camera.position).norm())
 
-        screen.camera.scale = screen_size.get_y() / max_norm / 2
+    screen.camera.scale = screen_size.get_y() / max_norm / 2
+
     # this coefficient controls the speed
     # of the simulation
-    time_scale = 10
-
+    time_scale = 1
     print("Start program")
 
     while not screen.should_quit:
