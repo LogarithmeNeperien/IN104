@@ -1,4 +1,4 @@
-from .vector import *
+from .vector import Vector2
 from .world import Body
 from ..physics.engine import gravitational_force
 
@@ -13,7 +13,7 @@ class Quadtree:
 		self.mean_body=mean_body
 		self.nodes=nodes
 
-	def add(body):
+	def add(self,body):
 		if self.mean_body is None:
 			self.mean_body=body
 		else:
@@ -57,9 +57,9 @@ class Quadtree:
 	#theta est un paramètre dans [0,1] qui contrôle la précision (on le prend à 0.5 généralement) (à 0 on a la précision maximale et on revient à l'algo brute force)
 
 	#body est le corps dont on calcule la somme des forces extérieures
-	#node est le noeud du corps
-	def calculate_force_on(body,node,theta):
-		n_body=node.mean_body
+	
+	def calculate_force_on(self,body,theta=0.5):
+		n_body=self.mean_body
 		if n_body is not None:
 			#s/d<theta <=> theta*d>s ; on note aussi que si le noeud n'a pas de fils on calcule la force inconditionnellement
 			if theta*(body.position-n_body.position).norm()>node.side_length or node.nodes is None:
@@ -68,6 +68,6 @@ class Quadtree:
 			else:
 				for i in range(4):
 					if node.nodes[i].mean_body.id_nb != body.id_nb:
-						calculate_force_on(body,node.nodes[i],theta)
+						node.nodes[i].calculate_force_on(body,theta)
 
 		
