@@ -48,9 +48,11 @@ class QuadtreeTestCase(unittest.TestCase):
 
 		node=self.quadtree.nodes[2]
 
-		for i in range(1):
-			self.assertIsNotNone(node.nodes[(3+i)%4].mean_body)
-			self.assertIsNone(node.nodes[(3+i)%4].nodes)
+		self.assertIsNotNone(node.nodes[3].mean_body)
+		self.assertIsNone(node.nodes[3].nodes)
+		self.assertIsNotNone(node.nodes[0].mean_body)
+		self.assertIsNone(node.nodes[0].nodes)
+		
 
 		self.assertIsNotNone(node.nodes[1].mean_body)
 		self.assertIsNone(node.nodes[1].nodes)
