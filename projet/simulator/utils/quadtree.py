@@ -7,7 +7,7 @@ from ..physics.engine import gravitational_force
 #Les fils d'un noeud représentent chaque quart du carré représenté par le père
 
 class Quadtree:
-	def __init__(side_length,center=Vect2(0,0),mean_body=None,nodes=None):
+	def __init__(self,side_length,center=Vector2(0,0),mean_body=None,nodes=None):
 		self.side_length=side_length
 		self.center=center
 		self.mean_body=mean_body
@@ -22,7 +22,7 @@ class Quadtree:
 			#Les fils créés représentent les 4 quarts du carré que représentent le noeud père (leur side_length est donc deux fois plus petite)
 			if self.nodes is None:
 				self.nodes=[Quadtree(self.side_length,
-					self.center+Vect2(i*self.side_length/2,j*self.side_length)) for i in range(-1,2,2) for j in range(-1,2,2)]
+					self.center+Vector2(i*self.side_length/2,j*self.side_length)) for i in range(-1,2,2) for j in range(-1,2,2)]
 
 			b_position=body.position
 			indice_ajout=-1
