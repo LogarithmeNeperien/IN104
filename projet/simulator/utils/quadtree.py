@@ -62,9 +62,9 @@ class Quadtree:
 					self.nodes[1].add(body)
 			else:
 				if b_position.get_x()-self.center.get_x()<=0:
-					self.nodes[2].add(body)					
+					self.nodes[3].add(body)					
 				else:
-					self.nodes[3].add(body)
+					self.nodes[2].add(body)
 
 			self.calculate_position_of_mean_bodies()
 

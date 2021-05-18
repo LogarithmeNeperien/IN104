@@ -34,16 +34,12 @@ class QuadtreeTestCase(unittest.TestCase):
 		b2.mass=5
 		b3=Body(Vector2(-5,4))
 		b3.mass=2
-		b4=Body(Vector2(-1,-1))
-		b4.mass=100
-		b5=Body(Vector2(-1.05,-1))
+		
 
-		#self.quadtree.add(b1)
-		#self.quadtree.add(b2)
-		#self.quadtree.add(b3)
-		#self.quadtree.add(b4)
-		#self.quadtree.add(b5)
-
+		self.quadtree.add(b1)
+		self.quadtree.add(b2)
+		self.quadtree.add(b3)
+		
 		self.quadtree.rec_visit(lambda father: concordance_masse_pere_fils(father,concordances))
 		
 		for concord in concordances:
@@ -60,10 +56,10 @@ class QuadtreeTestCase(unittest.TestCase):
 
 		self.quadtree.add(b1)
 		self.quadtree.add(b2)
-		self.quadtree.add(b3)
-		self.quadtree.add(b4)
+		#self.quadtree.add(b3)
+		#self.quadtree.add(b4)
 
-		
+		print(self.quadtree)##############"")
 
 
 		self.assertIsNone(self.quadtree.nodes[0].mean_body)
@@ -78,13 +74,13 @@ class QuadtreeTestCase(unittest.TestCase):
 
 
 		##à l'intérieur du nord-est, on prend encore une fois le nord est
-		node=self.quadtree.nodes[2].nodes[2]
+		#node=self.quadtree.nodes[2].nodes[2]
 
-		self.assertIsNone(node.nodes[0].mean_body)
-		self.assertIsNone(node.nodes[2].mean_body)
+		#self.assertIsNone(node.nodes[0].mean_body)
+		#self.assertIsNone(node.nodes[2].mean_body)
 
-		self.assertIsNotNone(node.nodes[1].mean_body)
-		self.assertIsNotNone(node.nodes[3].mean_body)
+		#self.assertIsNotNone(node.nodes[1].mean_body)
+		#self.assertIsNotNone(node.nodes[3].mean_body)
 
 
 
