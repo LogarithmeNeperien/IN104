@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     # this coefficient controls the speed
     # of the simulation
-    time_scale = 1
+    time_scale = 0.5
     print("Start program")
 
     while not screen.should_quit:
