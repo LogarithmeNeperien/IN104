@@ -12,7 +12,7 @@ from ..physics.engine import gravitational_force
 #Ajout d'un affichage textuel du quadtree
 
 class Quadtree:
-	appel_add=0#####################""
+	
 	def __init__(self,side_length,center=Vector2(0,0),mean_body=None,nodes=None):
 		self.side_length=side_length
 		self.center=center
@@ -31,40 +31,52 @@ class Quadtree:
 		return "<mean_body:%s center: %s nodes:%s"% (self.mean_body,self.center,string_nodes)
 
 	def add(self,body):
-		Quadtree.appel_add+=1##############""
 		if self.mean_body is None:
 			self.mean_body=body
 		else:
-			#si il y a déjà un corps dans le noeud (corps fictif ou non) on doit ajouter le corps récursivement dans le bon noeud fils.
+			#si il y a déjà un corps dans le noeud (corps fictif ou non) on doit l'ajouter aussi dans le bon noeud fils.
 			# (il faut les créer s'ils n'existent pas )
 			#Les fils créés représentent les 4 quarts du carré que représentent le noeud père (leur side_length est donc deux fois plus petite)
 			if self.nodes is None:
 
 				self.nodes=[Quadtree(self.side_length/2,
 							self.center+Vector2(i[0]*self.side_length/4,i[1]*self.side_length/4)) for i in [(-1,-1),(1,-1),(1,1),(-1,1)] ]
-							#self.center+Vector2(i[0]*self.side_length/4,i[1]*self.side_length/4)) for i in[(-1,-1),(1,-1),(1,1),(-1,1)]]			
+							#self.center+Vector2(i[0]*self.side_length/4,i[1]*self.side_length/4)) for i in[(-1,-1),(1,-1),(1,1),(-1,1)]]	
 
-				#notre feuille devient un noeud, donc le mean_body qu'elle contenait doit être insérer dans une feuille
-				true_body=self.mean_body
-				self.mean_body=Body(Vector2(0,0))#on crée simplement une instance, sa position sera calculer par calculate_position_of_mean_bodies
-				self.mean_body.mass=0#on corps fictif a une masse nulle avant tout ajout
-				self.mean_body.id_nb=-1#on fixe à -1 les corps fictifs
-				self.add(true_body)
-				
+				second_body_to_add=self.mean_body
+				self.mean_body=Body(Vector2)
 
+				#ajout de second_body_to_add
+				relative_pos=second_body_to_add.position-self.center
+				if relative_pos.get_y()<=0:
+					if relative_pos.get_x()<=0:
+						self.nodes[0].add(second_body_to_add)
+					else:
+						self.nodes[1].add(second_body_to_add)
 
-			b_position=body.position
-			
-			if b_position.get_y()-self.center.get_y()<=0:
-				if b_position.get_x()-self.center.get_x()<=0:
+				else:
+
+					if relative_pos.get_x()<=0:
+						self.nodes[3].add(second_body_to_add)
+					else:
+						self.nodes[2].add(second_body_to_add)
+
+			relative_pos=body.position-self.center
+
+			if relative_pos.get_y()<=0:
+				if relative_pos.get_x()<=0:
 					self.nodes[0].add(body)
 				else:
 					self.nodes[1].add(body)
+
 			else:
-				if b_position.get_x()-self.center.get_x()<=0:
-					self.nodes[3].add(body)					
+
+				if relative_pos.get_x()<=0:
+					self.nodes[3].add(body)
 				else:
 					self.nodes[2].add(body)
+
+				
 
 			self.calculate_position_of_mean_bodies()
 
