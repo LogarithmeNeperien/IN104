@@ -53,8 +53,8 @@ if __name__ == "__main__":
     should_erase_background = True
 
 
-    #simulator = Simulator(world, DummyEngine, DummySolver)
-    simulator = Simulator(world, BarnesHutEngine, DummySolver)
+    simulator = Simulator(world, DummyEngine, DummySolver)
+    #simulator = Simulator(world, BarnesHutEngine, DummySolver)
 
 
 
