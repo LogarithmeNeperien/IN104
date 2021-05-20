@@ -16,6 +16,8 @@ from simulator.solvers import LeapFrogSolver
 
 import pygame as pg
 import sys
+import random
+from random import uniform as uni
 
 if __name__ == "__main__":
 
@@ -28,6 +30,7 @@ if __name__ == "__main__":
 
     while line != (str(sys.argv[1])+'\n') :
         line = f.readline()
+        if line[0] == '$': continue
         if line == '' :
             print("Please type a valid trajectory")
             f.close()
@@ -35,19 +38,30 @@ if __name__ == "__main__":
 
     print("You have selected the " + str(line)+" configuration")
 
-
     nb_body = int(f.readline())
-
-    for i in range(nb_body):
-        attributes = f.readline().split()
-        position = Vector2(float(attributes[0]),float(attributes[1]))
-        velocity = Vector2(float(attributes[2]),float(attributes[3]))
-        mass = float(attributes[4])
-        color = (int(attributes[5]),int(attributes[6]),int(attributes[7]))
-        real_radius = float(attributes[8])
-        draw_radius = float(attributes[9])
-        b = Body(position,velocity,mass,color,real_radius,draw_radius)
-        world.add(b)
+    speed_scale = float(f.readline())
+    print(speed_scale)
+    if sys.argv[1] != "random" :
+        for i in range(nb_body):
+            attributes = f.readline().split()
+            position = Vector2(float(attributes[0]),float(attributes[1]))
+            velocity = speed_scale*Vector2(float(attributes[2]),float(attributes[3]))
+            mass = float(attributes[4])
+            color = (int(attributes[5]),int(attributes[6]),int(attributes[7]))
+            real_radius = float(attributes[8])
+            draw_radius = float(attributes[9])
+            b = Body(position,velocity,mass,color,real_radius,draw_radius)
+            world.add(b)
+    else :
+        for i in range(nb_body) :
+            position = Vector2(uni(-200,200),uni(-200,200))
+            velocity = Vector2(uni(-5,5),uni(-5,5))
+            mass = uni(1,50)
+            color= (random.randrange(255),random.randrange(255),random.randrange(255))
+            real_radius = random.randrange(10)
+            draw_radius = 2*real_radius
+            b = Body(position,velocity,mass,color,real_radius,draw_radius)
+            world.add(b)
 
     f.close()
 
@@ -56,7 +70,7 @@ if __name__ == "__main__":
 
 
     #simulator = Simulator(world, DummyEngine, DummySolver)
-    simulator = Simulator(world, BarnesHutEngine, DummySolver)
+    simulator = Simulator(world, DummyEngine, LeapFrogSolver)
 
 
 
@@ -78,7 +92,7 @@ if __name__ == "__main__":
 
     # this coefficient controls the speed
     # of the simulation
-    time_scale = 0.01
+    time_scale = 1
     print("Start program")
 
     while not screen.should_quit:
