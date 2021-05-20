@@ -89,7 +89,11 @@ class DummyEngine(IEngine):
                 accelerations[2*j+1]-=force.get_y()/masses[j]
 
 
-        return velocities+accelerations
+        y0_prime=Vector(len(values))
+        for i in range(len(values)):
+            y0_prime[i]=values[i]
+
+        return y0_prime
 
 
 class BarnesHutEngine(IEngine):
@@ -115,6 +119,7 @@ class BarnesHutEngine(IEngine):
 
 
 
+
     def derivatives(self,t0,y0):
         velocities=y0[2*len(self.world)::]
         accelerations=[0]*2*len(self.world)
@@ -130,7 +135,9 @@ class BarnesHutEngine(IEngine):
             quadtree.add(b)
 
         i=0
+
         for b in self.world.bodies():
+
             quadtree.calculate_acceleration_on(b,gravitational_force)
             accelerations[2*i]=b.accelerations.get_x()
             accelerations[2*i]=b.accelerations.get_y()
