@@ -140,6 +140,7 @@ if __name__ == "__main__":
             camera.position = camera.follows.position
 
         # draw current state
+        should_erase_background=not(screen.get_key_t())
         screen.draw(world,should_erase_background)
 
         # draw additional stuff

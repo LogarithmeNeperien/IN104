@@ -76,7 +76,7 @@ class Quadtree:
 
 				
 
-			self.calculate_position_of_mean_bodies()
+			
 
 
 	def calculate_position_of_mean_bodies(self):

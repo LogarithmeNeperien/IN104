@@ -23,8 +23,8 @@ class Screen:
         self.mouse_position = Vector2(0, 0)
 
         # this will store which buttons have been pressed in the current frame
-        # [LeftMouse, MiddleMouse, RightMouse, ScrollWheelUp, SrollWheelDown]
-        self._buttons = [False, False, False, False, False]
+        # [LeftMouse, MiddleMouse, RightMouse, ScrollWheelUp, SrollWheelDown,KEY_T]
+        self._buttons = [False, False, False, False, False,False]
 
         # this will be true when the user presses the exit button of the window
         self.should_quit = False
@@ -44,7 +44,7 @@ class Screen:
     def get_events(self):
         self.mouse_position = Vector2(*pg.mouse.get_pos())
 
-        for i in range(0, len(self._buttons)):
+        for i in range(0, len(self._buttons)-1):
             self._buttons[i] = False
 
         events = pg.event.get()
@@ -54,6 +54,10 @@ class Screen:
             elif event.type == pg.MOUSEBUTTONDOWN:
                 if event.button <= len(self._buttons):
                     self._buttons[event.button - 1] = True
+
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_t:
+                    self._buttons[5]=not(self._buttons[5])
 
         self.frame += 1
 
@@ -106,3 +110,4 @@ class Screen:
     def get_right_mouse(self): return self._buttons[2]
     def get_wheel_up(self): return self._buttons[3]
     def get_wheel_down(self): return self._buttons[4]
+    def get_key_t(self): return self._buttons[5]
