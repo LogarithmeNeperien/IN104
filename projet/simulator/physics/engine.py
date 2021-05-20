@@ -3,6 +3,8 @@
 from ..utils.vector import Vector, Vector2
 from .constants import G
 
+from ..utils.quadtree import Quadtree
+
 
 def gravitational_force(pos1, mass1, pos2, mass2):
     """ Return the force applied to a body in pos1 with mass1
@@ -82,3 +84,48 @@ class DummyEngine(IEngine):
 
 
         return velocities+accelerations
+
+
+class BarnesHutEngine(IEngine):
+    def __init__(self,world):
+        super().__init__(world)
+
+    def make_solver_state(self):
+        pos=[]
+        vel=[]
+
+        for b in self.world.bodies():
+
+            pos+=b.position
+            vel+=b.velocity
+
+        return pos+vel
+
+
+
+    def derivatives(self,t0,y0):
+        velocities=y0[2*len(self.world)::]
+        accelerations=[0]*2*len(self.world)
+
+        #calcul de la coordonnées max
+        coord_max=0
+        for i in range(2*len(self.world)):
+            coord_max=max(coord_max,abs(y0[i]))
+
+        #création du quadtree
+        quadtree=Quadtree(coord_max)
+        for b in self.world.bodies():
+            quadtree.add(b)
+
+        i=0
+        for b in self.world.bodies():
+            quadtree.calculate_acceleration_on(b,gravitational_force)
+            accelerations[2*i]=b.accelerations.get_x()
+            accelerations[2*i]=b.accelerations.get_y()
+            i+=1
+
+
+
+        return velocities+accelerations
+
+

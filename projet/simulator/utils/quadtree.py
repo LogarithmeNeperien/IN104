@@ -4,8 +4,6 @@
 #						calculate_position_of_mean_bodies qui met à jour les masses et positions des mean_body qui ne sont pas à des feuilles
 from .vector import Vector2
 from .world import Body
-from ..physics.engine import gravitational_force
-
 #Une feuille est un quadtree. Un noeud qui a 4 fils exactement qui sont des quadtrees est un quadtree
 #Un quadtree représente un carré de centre "center"et de longuer de côté "side_length"
 #Les fils d'un noeud représentent chaque quart du carré représenté par le père
@@ -112,17 +110,17 @@ class Quadtree:
 
 	#body est le corps dont on calcule la somme des forces extérieures
 	
-	def calculate_force_on(self,body,theta=0.5):
+	def calculate_acceleration_on(self,body,grav_force,theta=0.5):
 		n_body=self.mean_body
 		if n_body is not None:
 			#s/d<theta <=> theta*d>s ; on note aussi que si le noeud n'a pas de fils on calcule la force inconditionnellement
 			if theta*(body.position-n_body.position).norm()>node.side_length or node.nodes is None:
-				body.acceleration+=gravitational_force(body.position,body.mass,n_body.position,n_body.mass)/body.mass
+				body.acceleration+=grav_force(body.position,body.mass,n_body.position,n_body.mass)/body.mass
 
 			else:
 				for i in range(4):
 					if node.nodes[i].mean_body.id_nb != body.id_nb:
-						node.nodes[i].calculate_force_on(body,theta)
+						node.nodes[i].calculate_acceleration_on(body,theta)
 
 	
 	def rec_visit(self,f):

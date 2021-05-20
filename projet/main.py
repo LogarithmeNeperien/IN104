@@ -10,6 +10,10 @@ from simulator.solvers import DummySolver
 from simulator.physics.engine import DummyEngine
 from simulator.graphics import Screen
 
+#new engine and solvers
+from simulator.physics.engine import BarnesHutEngine
+from simulator.solvers import LeapFrogSolver
+
 import pygame as pg
 import sys
 
@@ -49,7 +53,10 @@ if __name__ == "__main__":
     should_erase_background = True
 
 
-    simulator = Simulator(world, DummyEngine, DummySolver)
+    #simulator = Simulator(world, DummyEngine, DummySolver)
+    simulator = Simulator(world, BarnesHutEngine, DummySolver)
+
+
 
     screen_size = Vector2(800, 600)
     screen = Screen(screen_size, bg_color=(0, 0, 0), caption="Simulator")
