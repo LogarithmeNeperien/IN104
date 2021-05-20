@@ -122,3 +122,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Backups, base , local, remote
+*BACKUP*
+*BASE*
+*LOCAL*
+*REMOTE*
