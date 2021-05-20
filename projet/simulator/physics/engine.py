@@ -98,7 +98,7 @@ class DummyEngine(IEngine):
 
 
 class BarnesHutEngine(IEngine):
-    def __init__(self,world):
+    def __init__(self,world,quadtree=None):
         super().__init__(world)
 
     def make_solver_state(self):
@@ -125,23 +125,32 @@ class BarnesHutEngine(IEngine):
         velocities=y0[2*len(self.world)::]
         accelerations=[0]*2*len(self.world)
 
-        #calcul de la coordonnées max
+        #calcul de la coordonnées max et la position moyenne des corps
         coord_max=0
+        x_moyen=0
+        y_moyen=0
         for i in range(2*len(self.world)):
+            x_moyen+=y0[i//2]
+            y_moyen+=y0[(i+1)//2]
             coord_max=max(coord_max,abs(y0[i]))
 
+        x_moyen/=(2*len(self.world))
+        y_moyen/=(2*len(self.world))
+
+
         #création du quadtree
-        quadtree=Quadtree(coord_max)
+        self.quadtree=Quadtree(coord_max,Vector2(x_moyen,y_moyen))
         for b in self.world.bodies():
-            quadtree.add(b)
+            self.quadtree.add(b)
 
         i=0
 
         for b in self.world.bodies():
 
-            quadtree.calculate_acceleration_on(b,gravitational_force)
-            accelerations[2*i]=b.accelerations.get_x()
-            accelerations[2*i]=b.accelerations.get_y()
+            
+            accel=self.calculate_acceleration_on(self.quadtree,b)
+            accelerations[2*i]=accel.get_x()
+            accelerations[2*i+1]=accel.get_y()
             i+=1
 
 
@@ -153,3 +162,19 @@ class BarnesHutEngine(IEngine):
         return y0_prime
 
 
+    def calculate_acceleration_on(self,node,body,theta=0.5):
+        n_body=node.mean_body
+        total_accel=Vector2()
+        if n_body is not None:
+            #s/d<theta <=> theta*d>s ; on note aussi que si le noeud n'a pas de fils on calcule la force inconditionnellement
+            if theta*(body.position-n_body.position).norm()>node.side_length or node.nodes is None:
+                return gravitational_force(body.position,body.mass,n_body.position,n_body.mass)/body.mass
+
+            else:
+                for i in range(4):
+                    if(node.nodes[i].mean_body is not None):
+                        if node.nodes[i].mean_body.id_nb != body.id_nb:
+                            total_accel+=self.calculate_acceleration_on(node.nodes[i],body,theta)
+                        return total_accel
+                    else:
+                        return Vector2()
