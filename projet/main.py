@@ -12,7 +12,7 @@ from simulator.graphics import Screen
 
 #new engine and solvers
 from simulator.physics.engine import BarnesHutEngine
-from simulator.solvers import LeapFrogSolver
+#from simulator.solvers import LeapFrogSolver
 
 import pygame as pg
 import sys

@@ -1,12 +1,12 @@
 import unittest
 from .. import Body, World
 from ..utils.vector import Vector2, Vector
-from ..physics.engine import DummyEngine, gravitational_force
+from ..physics.engine import DummyEngine,BarnesHutEngine,gravitational_force
 from ..physics.constants import G
 
 # region Solvers
 # This arry stores all the engines that will be tested by EngineTestCase
-ENGINES = []
+ENGINES = [DummyEngine]
 # endregion
 
 

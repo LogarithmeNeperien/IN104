@@ -114,13 +114,13 @@ class Quadtree:
 		n_body=self.mean_body
 		if n_body is not None:
 			#s/d<theta <=> theta*d>s ; on note aussi que si le noeud n'a pas de fils on calcule la force inconditionnellement
-			if theta*(body.position-n_body.position).norm()>node.side_length or node.nodes is None:
-				body.acceleration+=grav_force(body.position,body.mass,n_body.position,n_body.mass)/body.mass
+			if theta*(body.position-n_body.position).norm()>self.side_length or self.nodes is None:
+				body.accelerations+=grav_force(body.position,body.mass,n_body.position,n_body.mass)/body.mass
 
 			else:
 				for i in range(4):
-					if node.nodes[i].mean_body.id_nb != body.id_nb:
-						node.nodes[i].calculate_acceleration_on(body,theta)
+					if self.nodes[i].mean_body.id_nb != body.id_nb:
+						self.nodes[i].calculate_acceleration_on(body,theta)
 
 	
 	def rec_visit(self,f):

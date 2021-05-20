@@ -57,7 +57,7 @@ ODE_SYSTEMS = [
 
 # region Solvers
 # This arry stores all the solvers that will be tested against all the systems
-SOLVERS = []
+SOLVERS = [DummySolver]
 # endregion
 
 
