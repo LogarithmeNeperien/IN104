@@ -63,7 +63,13 @@ class DummyEngine(IEngine):
         	pos+=b.position
         	vel+=b.velocity
 
-        return pos+vel
+        values=pos+vel
+
+        y0=Vector(len(values))
+        for i in range(values):
+            y0[i]=values[i]
+
+        return y0
 
     def derivatives(self,t0,y0):
         velocities=y0[2*len(self.world)::]
@@ -90,7 +96,7 @@ class BarnesHutEngine(IEngine):
     def __init__(self,world):
         super().__init__(world)
 
-    def make_solver_state(self):
+     def make_solver_state(self):
         pos=[]
         vel=[]
 
@@ -99,7 +105,13 @@ class BarnesHutEngine(IEngine):
             pos+=b.position
             vel+=b.velocity
 
-        return pos+vel
+        values=pos+vel
+
+        y0=Vector(len(values))
+        for i in range(values):
+            y0[i]=values[i]
+
+        return y0
 
 
 
