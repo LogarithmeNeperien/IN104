@@ -89,6 +89,7 @@ class DummyEngine(IEngine):
                 accelerations[2*j+1]-=force.get_y()/masses[j]
 
 
+        values=velocities+accelerations
         y0_prime=Vector(len(values))
         for i in range(len(values)):
             y0_prime[i]=values[i]
@@ -144,7 +145,11 @@ class BarnesHutEngine(IEngine):
             i+=1
 
 
+        values=velocities+accelerations
+        y0_prime=Vector(len(values))
+        for i in range(len(values)):
+            y0_prime[i]=values[i]
 
-        return velocities+accelerations
+        return y0_prime
 
 
