@@ -66,7 +66,7 @@ class DummyEngine(IEngine):
         values=pos+vel
 
         y0=Vector(len(values))
-        for i in range(values):
+        for i in range(len(values)):
             y0[i]=values[i]
 
         return y0
@@ -96,7 +96,7 @@ class BarnesHutEngine(IEngine):
     def __init__(self,world):
         super().__init__(world)
 
-     def make_solver_state(self):
+    def make_solver_state(self):
         pos=[]
         vel=[]
 
@@ -108,7 +108,7 @@ class BarnesHutEngine(IEngine):
         values=pos+vel
 
         y0=Vector(len(values))
-        for i in range(values):
+        for i in range(len(values)):
             y0[i]=values[i]
 
         return y0

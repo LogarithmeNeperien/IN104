@@ -35,8 +35,14 @@ class DummySolver(ISolver):
 
     def integrate(self,t):
 
+        f_result=self.f(t,self.y0)
+        if isinstance(self.y0,float):
 
-        self.y0=[self.y0[i]+(t-self.t0)*self.f(0,self.y0)[i] for i in range(len(self.y0))]
+            self.y0=self.y0+(t-self.t0)*f_result
+            return self.y0
+
+        for i in range(len(self.y0)):
+            self.y0[i]=self.y0[i]+(t-self.t0)*f_result[i]
 
         return self.y0
 
