@@ -143,6 +143,8 @@ class BarnesHutEngine(IEngine):
         for b in self.world.bodies():
             self.quadtree.add(b)
 
+        self.quadtree.calculate_position_of_mean_bodies()
+
         i=0
 
         for b in self.world.bodies():

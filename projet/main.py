@@ -12,7 +12,7 @@ from simulator.graphics import Screen
 
 #new engine and solvers
 from simulator.physics.engine import BarnesHutEngine
-#from simulator.solvers import LeapFrogSolver
+from simulator.solvers import LeapFrogSolver
 
 import pygame as pg
 import sys
@@ -34,6 +34,8 @@ if __name__ == "__main__":
             sys.exit()
 
     print("You have selected the " + str(line)+" configuration")
+
+
     nb_body = int(f.readline())
 
     for i in range(nb_body):
