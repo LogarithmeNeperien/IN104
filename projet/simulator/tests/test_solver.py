@@ -1,6 +1,7 @@
 import unittest
 from math import cos, sin, sqrt, exp, pi
 from ..solvers import DummySolver
+from ..solvers import LeapFrogSolver
 
 # region ODE Systems
 
@@ -57,7 +58,7 @@ ODE_SYSTEMS = [
 
 # region Solvers
 # This arry stores all the solvers that will be tested against all the systems
-SOLVERS = [DummySolver]
+SOLVERS = [DummySolver,LeapFrogSolver]
 # endregion
 
 
