@@ -6,7 +6,7 @@ from ..physics.constants import G
 
 # region Solvers
 # This arry stores all the engines that will be tested by EngineTestCase
-ENGINES = [BarnesHutEngine]
+ENGINES = [DummyEngine,BarnesHutEngine]
 # endregion
 
 
