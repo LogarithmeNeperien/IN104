@@ -69,8 +69,9 @@ if __name__ == "__main__":
     should_erase_background = True
 
 
-    simulator = Simulator(world, DummyEngine, DummySolver)
-    #simulator = Simulator(world, DummyEngine, LeapFrogSolver)
+    #simulator = Simulator(world, DummyEngine, DummySolver)
+    simulator = Simulator(world, DummyEngine, LeapFrogSolver)
+    #simulator = Simulator(world, BarnesHutEngine, LeapFrogSolver)
 
 
 
@@ -147,10 +148,27 @@ if __name__ == "__main__":
 
             simulator.solver.y0 = simulator.engine.make_solver_state()
 
+        #KEY.c : centering of camera (identical with the one at the start of the program)
+        if screen.get_key_c():
+        	screen.camera.position[0]=0
+        	screen.camera.position[1]=0
+        	for b in world.bodies():
+        		screen.camera.position+=b.position
+        	screen.camera.position /= len(world)
+
+        	max_norm=1
+        	for b in world.bodies():
+        		max_norm = max(max_norm, (b.position - screen.camera.position).norm())
+        	screen.camera.scale = screen_size.get_y() / max_norm / 2
+
+      
+
         # positioning of camera
         if screen.camera.follows is not None:
             camera = screen.camera
             camera.position = camera.follows.position
+
+
 
         # draw current state
         should_erase_background=not(screen.get_key_t())
