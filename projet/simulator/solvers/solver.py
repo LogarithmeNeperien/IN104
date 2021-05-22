@@ -1,5 +1,6 @@
 #16/05 Theophane: Ajout du solveur saute mouton
 
+from ..utils.vector import Vector, Vector2
 class SolverError(Exception):
     pass
 
@@ -34,6 +35,10 @@ class DummySolver(ISolver):
         super().__init__(f,t0,y0,max_step_size)
 
     def integrate(self,t):
+
+        self.y0=[self.y0[i]+(t-self.t0)*self.f(0,self.y0)[i] for i in range(len(self.y0))]
+
+        return self.y0
 
         if (t-self.t0>self.max_step_size):
             h=self.max_step_size
