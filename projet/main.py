@@ -104,9 +104,8 @@ if __name__ == "__main__":
         elif screen.get_right_mouse():
 
             no_match = True
-            for b in world.bodies():
-
-                pos_abs_mouse = screen.camera.from_screen_coords(screen.mouse_position)
+            pos_abs_mouse = screen.camera.from_screen_coords(screen.mouse_position)
+            for b in world.bodies():               
 
                 if (
                     abs(pos_abs_mouse - b.position)
