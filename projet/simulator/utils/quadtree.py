@@ -28,52 +28,49 @@ class Quadtree:
 
 		return "<mean_body:%s center: %s nodes:%s"% (self.mean_body,self.center,string_nodes)
 
-	def add(self,body):
+	def add(self,body): 
+		#self.nodes=[Quadtree(self.side_length/2,
+							#self.center+Vector2(i[0]*self.side_length/4,i[1]*self.side_length/4)) for i in [(-1,-1),(1,-1),(1,1),(-1,1)] ] BACKUP
+
 		if self.mean_body is None:
 			self.mean_body=body
 		else:
-			#si il y a déjà un corps dans le noeud (corps fictif ou non) on doit l'ajouter aussi dans le bon noeud fils.
-			# (il faut les créer s'ils n'existent pas )
-			#Les fils créés représentent les 4 quarts du carré que représentent le noeud père (leur side_length est donc deux fois plus petite)
-			if self.nodes is None:
+			lifo=[[body,self]]
+			while(not(not(lifo))): #tant que lifo n'est pas vide. A noter que lifo==[] <=> not(lifo)
+				
 
-				self.nodes=[Quadtree(self.side_length/2,
-							self.center+Vector2(i[0]*self.side_length/4,i[1]*self.side_length/4)) for i in [(-1,-1),(1,-1),(1,1),(-1,1)] ]
-							#self.center+Vector2(i[0]*self.side_length/4,i[1]*self.side_length/4)) for i in[(-1,-1),(1,-1),(1,1),(-1,1)]]	
+				[body_to_place,node_of_placement]=lifo[-1]		
+				if node_of_placement.nodes is None:	#création de quatre fils à partir d'un noeud externe plein dans lequel on veut insérer un corps		
+					node_of_placement.nodes=[Quadtree(node_of_placement.side_length/2,
+											node_of_placement.center+Vector2(i[0]*node_of_placement.side_length/4,i[1]*node_of_placement.side_length/4)) 
+											for i in [(-1,-1),(1,-1),(1,1),(-1,1)] ]
 
-				second_body_to_add=self.mean_body
-				self.mean_body=Body(Vector2)
+					lifo.append((node_of_placement.mean_body,node_of_placement))
+					lifo[-1][1].mean_body=Body(Vector2()) #création du corps moyen fictif stocké dans le noeud interne
+					[body_to_place,node_of_placement]=lifo[-1]#mise à jour du corps à ajouter en premier	
 
-				#ajout de second_body_to_add
-				relative_pos=second_body_to_add.position-self.center
-				if relative_pos.get_y()<=0:
-					if relative_pos.get_x()<=0:
-						self.nodes[0].add(second_body_to_add)
+				
+
+						
+				index_of_placement=0
+				if body_to_place.position.get_y()-node_of_placement.center.get_y()<=0:
+					if body_to_place.position.get_x()-node_of_placement.center.get_x()<=0:
+						index_of_placement=0
 					else:
-						self.nodes[1].add(second_body_to_add)
-
+						index_of_placement=1
 				else:
-
-					if relative_pos.get_x()<=0:
-						self.nodes[3].add(second_body_to_add)
+					if body_to_place.position.get_x()-node_of_placement.center.get_x()<=0:
+						index_of_placement=3
 					else:
-						self.nodes[2].add(second_body_to_add)
+						index_of_placement=2
 
-			relative_pos=body.position-self.center
 
-			if relative_pos.get_y()<=0:
-				if relative_pos.get_x()<=0:
-					self.nodes[0].add(body)
+
+				if node_of_placement.nodes[index_of_placement].mean_body is None:
+					lifo.pop()
+					node_of_placement.nodes[index_of_placement].mean_body=body_to_place
 				else:
-					self.nodes[1].add(body)
-
-			else:
-
-				if relative_pos.get_x()<=0:
-					self.nodes[3].add(body)
-				else:
-					self.nodes[2].add(body)
-
+					lifo[-1][1]=node_of_placement.nodes[index_of_placement]
 				
 
 			
