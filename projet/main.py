@@ -70,6 +70,7 @@ if __name__ == "__main__":
 
 
     #simulator = Simulator(world, DummyEngine, DummySolver)
+    #simulator = Simulator(world, BarnesHutEngine, DummySolver)
     simulator = Simulator(world, DummyEngine, LeapFrogSolver)
     #simulator = Simulator(world, BarnesHutEngine, LeapFrogSolver)
 
