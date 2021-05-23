@@ -44,7 +44,12 @@ class QuadtreeTestCase(unittest.TestCase):
 		self.quadtree.add(b1)
 		self.quadtree.add(b2)
 		self.quadtree.add(b3)
-		
+		self.quadtree.add(b4)
+		self.quadtree.add(b5)
+
+		self.quadtree.calculate_position_of_mean_bodies()
+
+	
 		self.quadtree.rec_visit(lambda father: concordance_masse_pere_fils(father,concordances))
 		
 		for concord in concordances:
