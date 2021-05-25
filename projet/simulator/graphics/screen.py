@@ -59,7 +59,7 @@ class Screen:
                 if event.key==pg.K_c:
                     self._buttons[5]=True
                 elif event.key == pg.K_t:
-                    self._buttons[6]=not(self._buttons[5])
+                    self._buttons[6]=not(self._buttons[6])
                 
 
         self.frame += 1
